@@ -51,6 +51,6 @@ config :blog, Blog.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "FALLMOUSSA3112letoubien",
-  database: "blog_dev",
+  database: "Blog",
   hostname: "localhost",
   pool_size: 10
