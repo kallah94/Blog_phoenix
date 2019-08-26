@@ -4,9 +4,12 @@ defmodule Blog.UserController do
     # definir les alias
     alias Blog.User
 
+    # Plug
+    plug :authenticate when action in [:index, :show]
+
     def index(conn, _params) do
-        users = Repo.all(User)
-        render conn, "index.html", users: users
+      users = Repo.all(Blog.User)
+      render conn, "index.html", users: users
     end
 
     def new(conn, _params) do
@@ -19,6 +22,7 @@ defmodule Blog.UserController do
         case Repo.insert(changeset) do
             {:ok, user} ->
                 conn
+                |> Blog.Auth.login(user)
                 |> put_flash(:info, "#{user.name} a ete creer avec succes!")
                 |> redirect(to: user_path(conn, :index))
             {:error, changeset} ->
@@ -29,5 +33,16 @@ defmodule Blog.UserController do
     def show(conn, %{"id" => id}) do
         user = Repo.get(Blog.User, id)
         render conn, "show.html", user: user
+    end
+
+    def authenticate(conn, _opts) do
+        if conn.assigns.current_user do
+            conn
+        else
+            conn
+            |> put_flash(:error, "Il faut se connecter pour acceder à cette page")
+            |> redirect(to: page_path(conn, :index))
+            |> halt()
+        end
     end
 end
