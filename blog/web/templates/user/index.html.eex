@@ -6,6 +6,5 @@
 <td><%= render "user.html", user: user %></td>
 <td><%= link "View", to: user_path(@conn, :show, user.id) %></td>
 </tr>
-<%= link "new", to: user_path(@conn, :new)%>
 <% end %>
 </table>

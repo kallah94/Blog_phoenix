@@ -23,6 +23,12 @@ defmodule Blog.Mixfile do
       extra_applications: [:logger]
     ]
   end
+def application do
+    [
+      mod: {Blog, []},
+      extra_applications: [:logger]
+    ]
+  end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]

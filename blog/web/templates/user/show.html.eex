@@ -1,0 +1,1 @@
+<%= render "detailuser.html", user: @user%>

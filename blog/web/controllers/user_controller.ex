@@ -15,11 +15,19 @@ defmodule Blog.UserController do
     end
 
     def create(conn, %{"user" => user_params}) do
-        changeset = User.changeset(%User{}, user_params)
-        {:ok, user} = Repo.insert(changeset)
+        changeset = User.registration_changeset(%User{}, user_params)
+        case Repo.insert(changeset) do
+            {:ok, user} ->
+                conn
+                |> put_flash(:info, "#{user.name} a ete creer avec succes!")
+                |> redirect(to: user_path(conn, :index))
+            {:error, changeset} ->
+                render conn, "new.html", changeset: changeset
+        end
+    end
 
-        conn
-        |> put_flash(:info, "#{user.name} a ete creer avec succes!")
-        |> redirect(to: user_path(conn, :index))
+    def show(conn, %{"id" => id}) do
+        user = Repo.get(Blog.User, id)
+        render conn, "show.html", user: user
     end
 end
