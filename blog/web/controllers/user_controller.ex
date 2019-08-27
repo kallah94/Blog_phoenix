@@ -5,7 +5,7 @@ defmodule Blog.UserController do
     alias Blog.User
 
     # Plug
-    plug :authenticate when action in [:index, :show]
+    plug :authenticate_user when action in [:index, :show, :new]
 
     def index(conn, _params) do
       users = Repo.all(Blog.User)
@@ -35,14 +35,5 @@ defmodule Blog.UserController do
         render conn, "show.html", user: user
     end
 
-    def authenticate(conn, _opts) do
-        if conn.assigns.current_user do
-            conn
-        else
-            conn
-            |> put_flash(:error, "Il faut se connecter pour acceder à cette page")
-            |> redirect(to: page_path(conn, :index))
-            |> halt()
-        end
-    end
+   
 end
