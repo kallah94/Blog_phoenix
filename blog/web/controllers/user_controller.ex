@@ -5,7 +5,7 @@ defmodule Blog.UserController do
     alias Blog.User
 
     # Plug
-    plug :authenticate_user when action in [:index, :show, :new]
+    plug :authenticate_user when action in [:index, :show]
 
     def index(conn, _params) do
       users = Repo.all(Blog.User)
